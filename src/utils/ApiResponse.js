@@ -1,3 +1,4 @@
+/*IT IS FOR SUCCESSFULL API RESPONSE*/
 class ApiResponse {
   constructor(statusCode, data, message = "Success") {
     (this.statusCode = statusCode),
@@ -6,3 +7,4 @@ class ApiResponse {
       (this.success = statusCode);
   }
 }
+export { ApiResponse };

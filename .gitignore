@@ -1,4 +1,6 @@
 # Logs
+#the files or folder that you do not want to push in github
+
 node_modules
 logs
 *.log

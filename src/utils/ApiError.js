@@ -1,3 +1,4 @@
+/*THIS BELOW IS FOR THE CODE FOR API ERROOR CASES*/
 class ApiError extends Error {
   constructor(
     statusCode,

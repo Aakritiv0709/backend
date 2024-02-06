@@ -1,0 +1,8 @@
+#the files or folders that you do not want to change its style 
+#or design or anything using prettier
+/.vscode
+/node_modules
+./dist
+*.env
+.env
+.env*

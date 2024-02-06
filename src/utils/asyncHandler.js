@@ -1,5 +1,8 @@
+/*THERE IS 4 KEY-ERR,REQ,RES,NEXT REQ-WHEN USER SEND REQUEST FOR ANYTHING
+RES-WHEN SERVER SENDS A RESPONSE NEXT-IT IS FOR MIDDLEWARE TO PASS ONE THING TO ANOTHER
+OR TO PASS DIFFERENT TEST CASES ERR-IT IS FOR ANY TYPE OF ERROR*/
 const asyncHandler = (requestHandler) => {
-  (req, res, next) => {
+  return (req, res, next) => {
     Promise.resolve(requestHandler(req, res, next)).catch((err) => next(err));
   };
 };

@@ -1,6 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
+/*CREATE A USER MODEL*/
 const userSchema = new Schema(
   {
     username: {
@@ -21,7 +23,6 @@ const userSchema = new Schema(
     fullName: {
       type: String,
       required: true,
-
       trim: true,
       index: true,
     },
@@ -48,18 +49,27 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-/*bcrypt the password*/
+
+/*BECRYPT OR ENCODE THE USER PASSWORD WHEN THE PASSWORD IS MODIFIED*/
+/*HERE pre- keyword means that becrypt the password before the whole code run OF MODEL */
+
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); //means ki agar modified nhi
-  // h password toh next me chale jao warna bcrypt krdo neche wale code ko chala do mtlb
-  this.password = bcrypt.hash(this.password, 10);
+  if (!this.isModified("password")) return next();
+  //means ki agar modified nhi
+  // h password toh next me chale jao warna bcrypt krdo
+  // neche wale code ko chala do mtlb
+  this.password = await bcrypt.hash(this.password, 10); // here 10 is a limit
   next();
 });
-/*compared the actual password with bicrypt password that they both are same or not*/
+
+/*COMPARE THE ACTUAL PASSWORD WITH BECRYPTED PASSWORD TO CHECK THAT THEY BOTH 
+ARE SAME OR NOT */
+
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
-/*generate access tokens*/
+
+/*GENERATE ACCESS TOKEN CODE*/
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -74,6 +84,8 @@ userSchema.methods.generateAccessToken = function () {
     }
   );
 };
+
+/*GENERATE RESFRESH TOKEN CODE*/
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
@@ -85,5 +97,4 @@ userSchema.methods.generateRefreshToken = function () {
     }
   );
 };
-
-export const user = mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
