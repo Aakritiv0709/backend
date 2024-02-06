@@ -6,7 +6,7 @@ import connectDB from "./db/index.js";
 import { app } from "./app.js";
 /*DOTENV MAINLY USED TO LOAD ALL IMPORTANT DATA FROM ENV FILE AT THE START OF THE PROJECT*/
 dotenv.config({
-  path: "./env",
+  path: "./.env",
 });
 
 /*DB WORKS ASYNCHROUSLY THATS WHY IT IS IMPORTANT TO HANDLE ERROR LIKE BELOW*/

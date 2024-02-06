@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //to check that user exist or not=by importing User model it contact
   //with database and check all thing for us from database
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ username }, { email }],
   });
   if (existedUser) {
@@ -48,7 +48,19 @@ const registerUser = asyncHandler(async (req, res) => {
   //it adds some more function in our req.body like=req.files by multer package
   //"?."=is called chaining operator which is used becoz may be its exits or not to check
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0];
+  //const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  //write code for coverimage because it is not required field so how to
+  //handle error when someone not sent the coverimage
+  //you can also check avatar image in the below form
+  let coverImageLocalPath;
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage.length > 0
+  ) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  }
+
   //avatar image is required so check the validation
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file local path is required");
@@ -76,9 +88,12 @@ const registerUser = asyncHandler(async (req, res) => {
   );
   //last validation that user created successfully or not
   if (!createdUser) {
-    throw new ApiError(500, "Somwthing went wrong while registering the user");
+    throw new ApiError(500, "Something went wrong while registering the user");
   }
   //return response
+  //console.log(req.body); it returns fulname,password,username and email
+  //console.log(req.files); it returns all the info of avatar and coverimage because
+  //they both are files
   return res
     .status(201)
     .json(new ApiResponse(200, createdUser, "User created successfully"));
